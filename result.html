@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        .result-container {
+            margin: 20px auto;
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+        .result-container p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+    <h1>Result</h1>
+    <div class="result-container">
+        <p>Input Value: {{ inputvalue }}</p>
+        <p>Descriptions:</p>
+        <ul>
+            {% for description in descriptions %}
+            <li>{{ description }}</li>
+
+            {% endfor %}
+        </ul>
+    <div class="back-link">
+            <a href="{{ url_for('home') }}">Back to Home</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<html>
+<head>
+    <title>Symptom Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333333;
+        }
+
+        form {
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+    <h2>Enter Symptoms</h2>
+    <form id="symptom-form">
+        <label>Symptom 1:</label>
+        <select name="symptom1" required>
+            <option value="">Select a symptom</option>
+        </select><br>
+        <label>Symptom 2:</label>
+        <select name="symptom2" required>
+            <option value="">Select a symptom</option>
+        </select><br>
+        <label>Symptom 3:</label>
+        <select name="symptom3" required>
+            <option value="">Select a symptom</option>
+        </select><br>
+        <label>Symptom 4:</label>
+        <select name="symptom4" required>
+            <option value="">Select a symptom</option>
+        </select><br>
+        <label>Symptom 5:</label>
+        <select name="symptom5" required>
+            <option value="">Select a symptom</option>
+        </select><br>
+        <br>
+        <input type="submit" value="Predict">
+    </form>
+    </div>
+    <!-- <div id="result"></div> -->
+
+    <script>
+        const symptoms = [
+            'itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills', 'joint_pain',
+            'stomach_pain', 'acidity', 'ulcers_on_tongue', 'muscle_wasting', 'vomiting', 'burning_micturition',
+            'spotting_urination', 'fatigue', 'weight_gain', 'anxiety', 'cold_hands_and_feets', 'mood_swings',
+            'weight_loss', 'restlessness', 'lethargy', 'patches_in_throat', 'irregular_sugar_level', 'cough',
+            'high_fever', 'sunken_eyes', 'breathlessness', 'sweating', 'dehydration', 'indigestion', 'headache',
+            'yellowish_skin', 'dark_urine', 'nausea', 'loss_of_appetite', 'pain_behind_the_eyes', 'back_pain',
+            'constipation', 'abdominal_pain', 'diarrhoea', 'mild_fever', 'yellow_urine', 'yellowing_of_eyes',
+            'acute_liver_failure', 'fluid_overload', 'swelling_of_stomach', 'swelled_lymph_nodes', 'malaise',
+            'blurred_and_distorted_vision', 'phlegm', 'throat_irritation', 'redness_of_eyes', 'sinus_pressure',
+            'runny_nose', 'congestion', 'chest_pain', 'weakness_in_limbs', 'fast_heart_rate',
+            'pain_during_bowel_movements', 'pain_in_anal_region', 'bloody_stool', 'irritation_in_anus', 'neck_pain',
+            'dizziness', 'cramps', 'bruising', 'obesity', 'swollen_legs', 'swollen_blood_vessels',
+            'puffy_face_and_eyes', 'enlarged_thyroid', 'brittle_nails', 'swollen_extremeties', 'excessive_hunger',
+            'extra_marital_contacts', 'drying_and_tingling_lips', 'slurred_speech', 'knee_pain', 'hip_joint_pain',
+            'muscle_weakness', 'stiff_neck', 'swelling_joints', 'movement_stiffness', 'spinning_movements',
+            'loss_of_balance', 'unsteadiness', 'weakness_of_one_body_side', 'loss_of_smell', 'bladder_discomfort',
+            'foul_smell_of_urine', 'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching', 'toxic_look_(typhos)',
+            'depression', 'irritability', 'muscle_pain', 'altered_sensorium', 'red_spots_over_body', 'belly_pain',
+            'abnormal_menstruation', 'dischromic_patches', 'watering_from_eyes', 'increased_appetite', 'polyuria',
+            'family_history', 'mucoid_sputum', 'rusty_sputum', 'lack_of_concentration', 'visual_disturbances',
+            'receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma', 'stomach_bleeding',
+            'distention_of_abdomen', 'history_of_alcohol_consumption', 'fluid_overload', 'blood_in_sputum',
+            'prominent_veins_on_calf', 'palpitations', 'painful_walking', 'pus_filled_pimples', 'blackheads', 'scurring',
+            'skin_peeling', 'silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails', 'blister',
+            'red_sore_around_nose', 'yellow_crust_ooze'
+        ];
+
+        function generateDropdownOptions(selectElement) {
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.text = 'Select a symptom';
+            selectElement.appendChild(emptyOption);
+
+            symptoms.forEach(symptom => {
+                const option = document.createElement('option');
+                option.value = symptom;
+                option.text = symptom;
+                selectElement.appendChild(option);
+            });
+        }
+
+        const form = document.getElementById('symptom-form');
+        const resultDiv = document.getElementById('result');
+
+        generateDropdownOptions(form.symptom1);
+        generateDropdownOptions(form.symptom2);
+        generateDropdownOptions(form.symptom3);
+        generateDropdownOptions(form.symptom4);
+        generateDropdownOptions(form.symptom5);
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const symptoms = [];
+            for (let pair of formData.entries()) {
+                symptoms.push(pair[1]);
+            }
+            predictDisease(symptoms);
+        });
+
+        function predictDisease(symptoms) {
+            // Call the Python function for disease prediction and get the result
+            // Replace the URL with the appropriate endpoint or function call
+            const url = 'http://anusheykhan.pythonanywhere.com/predict';
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(symptoms),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Create a temporary container element
+                const container = document.createElement('div');
+                container.innerHTML = html;
+
+                // console.log(html);
+                // Extract the content from the container element
+                const content = container.querySelector('#content').innerHTML;
+
+                // Update the current page with the new content
+                document.querySelector('#content').innerHTML = content;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
